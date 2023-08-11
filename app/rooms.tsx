@@ -1,6 +1,8 @@
+import { gql, useQuery } from '@apollo/client';
 import React from 'react';
-import { Text, View, StyleSheet, FlatList } from 'react-native';
+import { Text, View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 
+import { RootQueryType } from '../__generated__/types';
 import RoomsIcon from '../assets/icons/rooms.svg';
 import SearchIcon from '../assets/icons/search.svg';
 import EmptyPlaceholder from '../components/EmptyPlaceholder';
@@ -9,46 +11,22 @@ import IconButton from '../components/IconButton';
 import RoomItem from '../components/RoomItem';
 import { COLORS } from '../styles/colors';
 
+const GET_ROOMS = gql`
+  query {
+    usersRooms {
+      rooms {
+        id
+        name
+      }
+    }
+  }
+`;
+
 function Rooms() {
-  const rooms = [
-    {
-      id: 1,
-      name: 'Room 1',
-      unread: true,
-    },
-    {
-      id: 2,
-      name: 'Room 2',
-    },
-    {
-      id: 3,
-      name: 'Room 3',
-    },
-    {
-      id: 4,
-      name: 'Room 4',
-    },
-    {
-      id: 5,
-      name: 'Room 5',
-    },
-    {
-      id: 6,
-      name: 'Room 6',
-    },
-    {
-      id: 7,
-      name: 'Room 7',
-    },
-    {
-      id: 8,
-      name: 'Room 8',
-    },
-    {
-      id: 9,
-      name: 'Room 9',
-    },
-  ];
+  const { loading, error, data, refetch } = useQuery<RootQueryType>(GET_ROOMS);
+
+  const rooms = data?.usersRooms?.rooms ?? [];
+
   return (
     <View style={styles.container}>
       <Header>
@@ -62,14 +40,20 @@ function Rooms() {
           </IconButton>
         </View>
       </Header>
-      <FlatList
-        data={rooms}
-        renderItem={({ item }) => <RoomItem name={item.name} unread={item.unread} />}
-        keyExtractor={(item) => item.id.toString()}
-        ListEmptyComponent={<EmptyPlaceholder text="No rooms" />}
-        contentContainerStyle={[styles.list, { flex: rooms.length > 0 ? undefined : 1 }]}
-        style={{ marginTop: -24 }}
-      />
+      {loading && <ActivityIndicator size={50} color={COLORS.blue['500']} style={{ flex: 1 }} />}
+      {error && <EmptyPlaceholder text="Something went wrong" />}
+      {data && (
+        <FlatList
+          data={rooms}
+          renderItem={({ item }) => <RoomItem name={item?.name ?? ''} id={item?.id ?? ''} />}
+          keyExtractor={(item) => item?.id ?? ''}
+          ListEmptyComponent={<EmptyPlaceholder text="No rooms" />}
+          contentContainerStyle={[styles.list, { flex: rooms.length ? undefined : 1 }]}
+          style={{ marginTop: -24 }}
+          onRefresh={refetch}
+          refreshing={loading}
+        />
+      )}
     </View>
   );
 }

@@ -1,20 +1,55 @@
+import { gql, useQuery } from '@apollo/client';
+import { formatDistanceToNow, parse } from 'date-fns';
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
+import { RootQueryType } from '../__generated__/types';
 import ProfileImage from '../assets/images/profile.svg';
 import { COLORS } from '../styles/colors';
 
-function RoomItem({ name, unread }: { name: string; unread?: boolean }) {
+const GET_ROOM = gql`
+  query GetRoom($id: ID!) {
+    room(id: $id) {
+      id
+      name
+      messages {
+        body
+        insertedAt
+      }
+    }
+  }
+`;
+
+function RoomItem({ id, name }: { id: string; name: string }) {
+  const { data } = useQuery<RootQueryType>(GET_ROOM, {
+    variables: { id },
+  });
+
+  const room = data?.room;
+  const messages = room?.messages ?? [];
+  const lastMessage = messages[messages.length - 1];
+
+  const unread = false;
+
   return (
     <View style={[styles.item, unread ? styles.itemUnread : null]}>
       <ProfileImage />
       <View style={styles.textContainer}>
-        <Text style={[styles.roomName, unread ? styles.roomNameUnread : null]}>{name}</Text>
+        <Text style={[styles.roomName, unread ? styles.roomNameUnread : null]} numberOfLines={1}>
+          {name}
+        </Text>
         <Text style={[styles.lastMessage, unread ? styles.lastMessageUnread : null]} numberOfLines={1}>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium, optio!
+          {lastMessage?.body ?? '...'}
         </Text>
       </View>
-      {unread ? <View style={styles.unreadIndicator} /> : <Text style={styles.lastMessageTime}>24 m ago</Text>}
+      {unread ? (
+        <View style={styles.unreadIndicator} />
+      ) : (
+        <Text style={styles.lastMessageTime}>
+          {lastMessage &&
+            formatDistanceToNow(parse(lastMessage?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date())) + ' ago'}
+        </Text>
+      )}
     </View>
   );
 }
@@ -60,6 +95,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Medium',
     fontSize: 16,
     color: COLORS.black,
+    marginRight: 80,
   },
   roomNameUnread: {
     color: COLORS.white,
