@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 function Index() {
   return (
     <View>
-      <Text>Test</Text>
+      <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 90 }}>Test</Text>
     </View>
   );
 }
