@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, FlatList } from 'react-native';
 
 import RoomsIcon from '../assets/icons/rooms.svg';
 import SearchIcon from '../assets/icons/search.svg';
+import EmptyPlaceholder from '../components/EmptyPlaceholder';
 import Header from '../components/Header';
 import IconButton from '../components/IconButton';
 import RoomItem from '../components/RoomItem';
@@ -65,7 +66,8 @@ function Rooms() {
         data={rooms}
         renderItem={({ item }) => <RoomItem name={item.name} unread={item.unread} />}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.list}
+        ListEmptyComponent={<EmptyPlaceholder text="No rooms" />}
+        contentContainerStyle={[styles.list, { flex: rooms.length > 0 ? undefined : 1 }]}
         style={{ marginTop: -24 }}
       />
     </View>
