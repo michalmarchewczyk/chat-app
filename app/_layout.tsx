@@ -1,9 +1,8 @@
-import { ApolloProvider } from '@apollo/client';
 import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
 import React from 'react';
 
-import { getClient } from '../utils/client';
+import Provider from '../components/Provider';
 
 function Layout() {
   const [fontsLoaded] = useFonts({
@@ -22,9 +21,9 @@ function Layout() {
   }
 
   return (
-    <ApolloProvider client={getClient()}>
+    <Provider>
       <Slot />
-    </ApolloProvider>
+    </Provider>
   );
 }
 

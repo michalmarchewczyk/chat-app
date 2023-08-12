@@ -12,7 +12,7 @@
     "graphql-codegen:watch": "graphql-codegen --watch"
   },
   "dependencies": {
-    "@apollo/client": "^3.8.1",
+    "@apollo/client": "^3.7.17",
     "date-fns": "^2.30.0",
     "expo": "~49.0.7",
     "expo-constants": "^14.4.2",
