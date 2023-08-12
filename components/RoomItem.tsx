@@ -1,7 +1,8 @@
 import { gql, useQuery } from '@apollo/client';
 import { formatDistanceToNow, parse } from 'date-fns';
+import { Link } from 'expo-router';
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
 
 import { RootQueryType } from '../__generated__/types';
 import ProfileImage from '../assets/images/profile.svg';
@@ -32,35 +33,42 @@ function RoomItem({ id, name }: { id: string; name: string }) {
   const unread = false;
 
   return (
-    <View style={[styles.item, unread ? styles.itemUnread : null]}>
-      <ProfileImage />
-      <View style={styles.textContainer}>
-        <Text style={[styles.roomName, unread ? styles.roomNameUnread : null]} numberOfLines={1}>
-          {name}
-        </Text>
-        <Text style={[styles.lastMessage, unread ? styles.lastMessageUnread : null]} numberOfLines={1}>
-          {lastMessage?.body ?? '...'}
-        </Text>
-      </View>
-      {unread ? (
-        <View style={styles.unreadIndicator} />
-      ) : (
-        <Text style={styles.lastMessageTime}>
-          {lastMessage &&
-            formatDistanceToNow(parse(lastMessage?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date())) + ' ago'}
-        </Text>
-      )}
-    </View>
+    <Link href={`/chats/${id}`} asChild style={styles.wrapper}>
+      <TouchableHighlight activeOpacity={0.9} underlayColor={COLORS.black}>
+        <View style={[styles.item, unread ? styles.itemUnread : null]}>
+          <ProfileImage style={{ width: 64, height: 64 }} />
+          <View style={styles.textContainer}>
+            <Text style={[styles.roomName, unread ? styles.roomNameUnread : null]} numberOfLines={1}>
+              {name}
+            </Text>
+            <Text style={[styles.lastMessage, unread ? styles.lastMessageUnread : null]} numberOfLines={1}>
+              {lastMessage?.body ?? '...'}
+            </Text>
+          </View>
+          {unread ? (
+            <View style={styles.unreadIndicator} />
+          ) : (
+            <Text style={styles.lastMessageTime}>
+              {lastMessage &&
+                formatDistanceToNow(parse(lastMessage?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date())) + ' ago'}
+            </Text>
+          )}
+        </View>
+      </TouchableHighlight>
+    </Link>
   );
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    marginVertical: 8,
+    borderRadius: 12,
+  },
   item: {
     backgroundColor: COLORS.white,
     height: 88,
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 8,
     borderRadius: 12,
     padding: 12,
     gap: 16,
