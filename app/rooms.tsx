@@ -1,13 +1,10 @@
 import { gql, useQuery } from '@apollo/client';
 import React from 'react';
-import { Text, View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
 
+import RoomsHeader from './components/RoomsHeader';
 import { RootQueryType } from '../__generated__/types';
-import RoomsIcon from '../assets/icons/rooms.svg';
-import SearchIcon from '../assets/icons/search.svg';
 import EmptyPlaceholder from '../components/EmptyPlaceholder';
-import Header from '../components/Header';
-import IconButton from '../components/IconButton';
 import RoomItem from '../components/RoomItem';
 import { COLORS } from '../styles/colors';
 
@@ -29,17 +26,7 @@ function Rooms() {
 
   return (
     <View style={styles.container}>
-      <Header>
-        <Text style={styles.headerText}>Rooms</Text>
-        <View style={styles.headerIcons}>
-          <IconButton>
-            <SearchIcon />
-          </IconButton>
-          <IconButton>
-            <RoomsIcon />
-          </IconButton>
-        </View>
-      </Header>
+      <RoomsHeader />
       {loading && <ActivityIndicator size={50} color={COLORS.blue['500']} style={{ flex: 1 }} />}
       {error && <EmptyPlaceholder text="Something went wrong" />}
       {data && (
@@ -62,16 +49,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.blue['100'],
-  },
-  headerText: {
-    fontFamily: 'Poppins-Bold',
-    fontSize: 28,
-    color: COLORS.plum['500'],
-  },
-  headerIcons: {
-    flexDirection: 'row',
-    gap: 12,
-    marginBottom: 2,
   },
   list: {
     paddingBottom: 24,
