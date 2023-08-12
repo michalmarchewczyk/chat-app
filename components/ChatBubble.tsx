@@ -10,6 +10,7 @@ function ChatBubble(props: BubbleProps<IMessage>) {
       {...props}
       wrapperStyle={{ left: [styles.bubble, styles.bubbleLeft], right: [styles.bubble, styles.bubbleRight] }}
       textStyle={{ left: styles.text, right: styles.text }}
+      renderTime={() => null}
     />
   );
 }
@@ -18,6 +19,7 @@ const styles = StyleSheet.create({
   bubble: {
     marginVertical: 4,
     padding: 4,
+    paddingTop: 6,
     borderBottomLeftRadius: 12,
     borderBottomRightRadius: 12,
     borderTopLeftRadius: 12,
