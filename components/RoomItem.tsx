@@ -24,11 +24,19 @@ const GET_ROOM = gql`
 function RoomItem({ id, name }: { id: string; name: string }) {
   const { data } = useQuery<RootQueryType>(GET_ROOM, {
     variables: { id },
+    pollInterval: 2000,
   });
 
   const room = data?.room;
-  const messages = room?.messages ?? [];
+  const messages = room?.messages?.slice() ?? [];
+  messages.sort(
+    (a, b) =>
+      parse(a?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date()).getTime() -
+      parse(b?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date()).getTime(),
+  );
   const lastMessage = messages[messages.length - 1];
+  const lastMessageDate = parse(lastMessage?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date());
+  lastMessageDate.setMinutes(lastMessageDate.getMinutes() - lastMessageDate.getTimezoneOffset());
 
   const unread = false;
 
@@ -48,10 +56,7 @@ function RoomItem({ id, name }: { id: string; name: string }) {
           {unread ? (
             <View style={styles.unreadIndicator} />
           ) : (
-            <Text style={styles.lastMessageTime}>
-              {lastMessage &&
-                formatDistanceToNow(parse(lastMessage?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date())) + ' ago'}
-            </Text>
+            <Text style={styles.lastMessageTime}>{lastMessage && formatDistanceToNow(lastMessageDate) + ' ago'}</Text>
           )}
         </View>
       </TouchableHighlight>
@@ -89,7 +94,7 @@ const styles = StyleSheet.create({
   },
   lastMessageTime: {
     position: 'absolute',
-    top: 12,
+    top: 8,
     right: 12,
     color: COLORS.gray['500'],
     fontFamily: 'Poppins-Regular',
@@ -97,7 +102,7 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
-    marginTop: 2,
+    marginTop: 4,
   },
   roomName: {
     fontFamily: 'Poppins-Medium',

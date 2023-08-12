@@ -91,8 +91,9 @@ function Chat() {
     );
   }, [room?.messages]);
 
-  const lastMessage = messages[messages.length - 1];
+  const lastMessage = messages[0];
   const lastMessageDate = (lastMessage?.createdAt as Date) ?? undefined;
+  lastMessageDate?.setMinutes(lastMessageDate.getMinutes() - lastMessageDate.getTimezoneOffset());
 
   const send = useCallback(async (messages: IMessage[] = []) => {
     setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
