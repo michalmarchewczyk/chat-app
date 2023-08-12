@@ -1,4 +1,4 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native';
 
@@ -12,6 +12,7 @@ function Input(
   },
 ) {
   const [focused, setFocused] = useState(false);
+  const [hidden, setHidden] = useState(true);
 
   return (
     <View style={props.containerStyles}>
@@ -26,13 +27,25 @@ function Input(
         ]}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
+        selectionColor={COLORS.black}
+        secureTextEntry={props.secureTextEntry && hidden}
       />
-      {!!(focused && props.value?.length) && (
+      {!!(focused && props.value?.length && !props.secureTextEntry) && (
         <TouchableOpacity
-          style={[styles.inputClear, { top: props.label ? 39 : 13 }]}
+          activeOpacity={0.8}
+          style={[styles.inputClear, { top: props.label ? 33 : 7 }]}
           onPress={() => props.onChangeText?.('')}
         >
           <AntDesign name="closecircle" size={20} color={COLORS.gray['300']} />
+        </TouchableOpacity>
+      )}
+      {props.secureTextEntry && (
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={[styles.inputClear, { top: props.label ? 33 : 7 }]}
+          onPress={() => setHidden(!hidden)}
+        >
+          <Ionicons name={hidden ? 'eye' : 'eye-off'} size={20} color={COLORS.gray['300']} />
         </TouchableOpacity>
       )}
       {props.error && <Text style={styles.error}>{props.error}</Text>}
@@ -46,13 +59,15 @@ const styles = StyleSheet.create({
     color: COLORS.black,
     borderRadius: 10,
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingTop: 0,
+    paddingBottom: 0,
     height: 48,
     fontFamily: 'Poppins-Medium',
     fontSize: 15,
     lineHeight: 22,
     borderWidth: 2,
     borderColor: 'transparent',
+    textAlignVertical: 'center',
   },
   inputFocused: {
     borderColor: COLORS.plum['500'],
@@ -74,7 +89,8 @@ const styles = StyleSheet.create({
   },
   inputClear: {
     position: 'absolute',
-    right: 12,
+    right: 8,
+    padding: 6,
   },
 });
 

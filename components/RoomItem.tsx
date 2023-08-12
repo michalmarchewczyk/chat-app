@@ -102,13 +102,13 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     flex: 1,
-    marginTop: 4,
+    marginTop: 5,
   },
   roomName: {
     fontFamily: 'Poppins-Medium',
-    fontSize: 16,
+    fontSize: 15,
     color: COLORS.black,
-    marginRight: 80,
+    marginRight: 88,
   },
   roomNameUnread: {
     color: COLORS.white,

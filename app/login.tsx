@@ -16,7 +16,7 @@ function Login() {
             <Text style={styles.header}>Welcome Back</Text>
             <Text style={styles.subheader}>Log in and stay in touch{'\n'}with everyone!</Text>
             <Input label="e-mail address" containerStyles={{ height: 100 }} />
-            <Input label="password" containerStyles={{ height: 100 }} />
+            <Input label="password" containerStyles={{ height: 100 }} secureTextEntry />
             <View style={{ flex: 1 }} />
             <TextButton title="Log in" />
             <View style={styles.footer}>

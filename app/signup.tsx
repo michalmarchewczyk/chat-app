@@ -26,8 +26,8 @@ function Signup() {
             <Input label="e-mail address" containerStyles={{ height: 100 }} />
             <Input label="first name" containerStyles={{ height: 100 }} />
             <Input label="last name" containerStyles={{ height: 100 }} />
-            <Input label="password" containerStyles={{ height: 100 }} />
-            <Input label="password confirmation" containerStyles={{ height: 100 }} />
+            <Input label="password" containerStyles={{ height: 100 }} secureTextEntry />
+            <Input label="password confirmation" containerStyles={{ height: 100 }} secureTextEntry />
             <View style={{ flex: 1 }} />
             <TextButton title="Sign up" />
             <View style={styles.terms}>
