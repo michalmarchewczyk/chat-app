@@ -1,53 +1,12 @@
-import { gql, useMutation } from '@apollo/client';
-import { Link, useRouter } from 'expo-router';
-import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'expo-router';
+import React from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { RootMutationType } from '../__generated__/types';
-import Input from '../components/Input';
-import TextButton from '../components/TextButton';
+import LoginForm from '../components/LoginForm';
 import { COLORS } from '../styles/colors';
-import { AuthContext } from '../utils/AuthContext';
-
-const LOGIN_USER = gql`
-  mutation LoginUser($email: String!, $password: String!) {
-    loginUser(email: $email, password: $password) {
-      token
-      user {
-        id
-        firstName
-        lastName
-        email
-      }
-    }
-  }
-`;
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState<undefined | string>(undefined);
-  const router = useRouter();
-  const authContext = useContext(AuthContext);
-
-  const [loginUser, { data, loading, error: loginError }] = useMutation<RootMutationType>(LOGIN_USER);
-
-  useEffect(() => {
-    setError(loginError?.message ?? undefined);
-  }, [loginError]);
-
-  useEffect(() => {
-    if (data?.loginUser?.user) {
-      authContext.setToken(data.loginUser.token ?? undefined);
-      router.push('/rooms');
-    }
-  }, [data]);
-
-  const submit = async () => {
-    await loginUser({ variables: { email, password } }).catch(() => {});
-  };
-
   return (
     <SafeAreaView style={styles.wrapper}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
@@ -55,24 +14,7 @@ function Login() {
           <View style={styles.container}>
             <Text style={styles.header}>Welcome Back</Text>
             <Text style={styles.subheader}>Log in and stay in touch{'\n'}with everyone!</Text>
-            <Input
-              label="e-mail address"
-              containerStyles={{ height: 100 }}
-              value={email}
-              onChangeText={setEmail}
-              onChange={() => setError(undefined)}
-            />
-            <Input
-              label="password"
-              containerStyles={{ height: 100 }}
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
-              error={error}
-              onChange={() => setError(undefined)}
-            />
-            <View style={{ flex: 1 }} />
-            <TextButton title="Log in" onPress={() => submit()} loading={loading} />
+            <LoginForm />
             <View style={styles.footer}>
               <Text style={styles.footerText}>Don't have an account?</Text>
               <Link href="/signup" asChild>
