@@ -1,14 +1,20 @@
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native';
 
 import { COLORS } from '../styles/colors';
 
-function Input(props: React.ComponentProps<typeof TextInput> & { label?: string; error?: string }) {
+function Input(
+  props: React.ComponentProps<typeof TextInput> & {
+    label?: string;
+    error?: string;
+    containerStyles?: StyleProp<ViewStyle>;
+  },
+) {
   const [focused, setFocused] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <View style={props.containerStyles}>
       {props.label && <Text style={styles.label}>{props.label}</Text>}
       <TextInput
         {...props}
@@ -35,9 +41,6 @@ function Input(props: React.ComponentProps<typeof TextInput> & { label?: string;
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   input: {
     backgroundColor: COLORS.white,
     color: COLORS.black,

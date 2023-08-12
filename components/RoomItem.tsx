@@ -34,9 +34,9 @@ function RoomItem({ id, name }: { id: string; name: string }) {
       parse(a?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date()).getTime() -
       parse(b?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date()).getTime(),
   );
-  const lastMessage = messages[messages.length - 1];
+  const lastMessage = messages[messages.length - 1] ?? undefined;
   const lastMessageDate = parse(lastMessage?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date());
-  lastMessageDate.setMinutes(lastMessageDate.getMinutes() - lastMessageDate.getTimezoneOffset());
+  lastMessageDate?.setMinutes(lastMessageDate.getMinutes() - lastMessageDate.getTimezoneOffset());
 
   const unread = false;
 

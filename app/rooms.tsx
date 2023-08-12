@@ -2,10 +2,10 @@ import { gql, useQuery } from '@apollo/client';
 import React from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
 
-import RoomsHeader from './components/RoomsHeader';
 import { RootQueryType } from '../__generated__/types';
 import EmptyPlaceholder from '../components/EmptyPlaceholder';
 import RoomItem from '../components/RoomItem';
+import RoomsHeader from '../components/RoomsHeader';
 import { COLORS } from '../styles/colors';
 
 const GET_ROOMS = gql`

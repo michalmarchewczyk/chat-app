@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import RoomsIcon from '../../assets/icons/rooms.svg';
-import SearchIcon from '../../assets/icons/search.svg';
-import Header from '../../components/Header';
-import IconButton from '../../components/IconButton';
-import { COLORS } from '../../styles/colors';
+import Header from './Header';
+import IconButton from './IconButton';
+import RoomsIcon from '../assets/icons/rooms.svg';
+import SearchIcon from '../assets/icons/search.svg';
+import { COLORS } from '../styles/colors';
 
 function RoomsHeader() {
   return (

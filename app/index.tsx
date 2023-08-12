@@ -9,7 +9,7 @@ function Index() {
   return (
     <View style={styles.container}>
       <Text style={{ fontFamily: 'Poppins-Bold', fontSize: 70, color: COLORS.plum['500'] }}>Chatty.</Text>
-      <Link href="/rooms" asChild>
+      <Link href="/login" asChild>
         <TextButton title="Log in" />
       </Link>
     </View>

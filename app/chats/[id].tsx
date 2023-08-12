@@ -116,7 +116,7 @@ function Chat() {
         renderDay={(props: DayProps) => <Day {...props} textStyle={{ color: COLORS.gray['500'] }} />}
         renderComposer={ChatInput}
         renderInputToolbar={ChatInputToolbar}
-        messagesContainerStyle={{ paddingBottom: 40 }}
+        messagesContainerStyle={{ paddingBottom: 38 }}
         renderSend={ChatSendButton}
         alwaysShowSend
       />

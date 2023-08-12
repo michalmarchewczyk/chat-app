@@ -5,7 +5,9 @@ import { ComposerProps } from 'react-native-gifted-chat';
 import Input from './Input';
 
 function ChatInput(props: ComposerProps) {
-  return <Input value={props.text} onChangeText={props.onTextChanged} style={styles.input} />;
+  return (
+    <Input value={props.text} onChangeText={props.onTextChanged} style={styles.input} containerStyles={{ flex: 1 }} />
+  );
 }
 
 const styles = StyleSheet.create({
