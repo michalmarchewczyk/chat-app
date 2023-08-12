@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     lineHeight: 42,
     marginLeft: -12,
     color: COLORS.plum['500'],
-    marginTop: 16,
+    marginTop: 12,
     marginBottom: 28,
   },
   subheader: {

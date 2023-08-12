@@ -12,8 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import Input from '../components/Input';
-import TextButton from '../components/TextButton';
+import SignupForm from '../components/SignupForm';
 import { COLORS } from '../styles/colors';
 
 function Signup() {
@@ -23,13 +22,7 @@ function Signup() {
         <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
           <View style={styles.container}>
             <Text style={styles.header}>Create account</Text>
-            <Input label="e-mail address" containerStyles={{ height: 100 }} />
-            <Input label="first name" containerStyles={{ height: 100 }} />
-            <Input label="last name" containerStyles={{ height: 100 }} />
-            <Input label="password" containerStyles={{ height: 100 }} secureTextEntry />
-            <Input label="password confirmation" containerStyles={{ height: 100 }} secureTextEntry />
-            <View style={{ flex: 1 }} />
-            <TextButton title="Sign up" />
+            <SignupForm />
             <View style={styles.terms}>
               <Text style={styles.termsText}>
                 <Text>By signing up, you agree with{'\n'}</Text>
@@ -73,7 +66,7 @@ const styles = StyleSheet.create({
     lineHeight: 42,
     marginLeft: -12,
     color: COLORS.plum['500'],
-    marginTop: 16,
+    marginTop: 12,
     marginBottom: 28,
   },
   subheader: {

@@ -21,12 +21,18 @@ function Input(
         {...props}
         style={[
           styles.input,
-          props.error ? styles.inputError : null,
           focused ? styles.inputFocused : null,
+          props.error ? styles.inputError : null,
           props.style,
         ]}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
+        onFocus={(e) => {
+          props.onFocus?.(e);
+          setFocused(true);
+        }}
+        onBlur={(e) => {
+          props.onBlur?.(e);
+          setFocused(false);
+        }}
         selectionColor={COLORS.black}
         secureTextEntry={props.secureTextEntry && hidden}
       />
