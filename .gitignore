@@ -36,3 +36,4 @@ yarn-error.*
 
 .idea
 __generated__
+graphql.config.yml

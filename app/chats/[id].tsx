@@ -1,13 +1,16 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { parse } from 'date-fns';
 import { useLocalSearchParams } from 'expo-router';
 import React, { useCallback, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { GiftedChat, IMessage } from 'react-native-gifted-chat';
+import { Day, DayProps, GiftedChat, IMessage } from 'react-native-gifted-chat';
 
 import { Message, RootQueryType } from '../../__generated__/types';
 import ChatBubble from '../../components/ChatBubble';
 import ChatHeader from '../../components/ChatHeader';
+import ChatInput from '../../components/ChatInput';
+import ChatInputToolbar from '../../components/ChatInputToolbar';
+import ChatSendButton from '../../components/ChatSendButton';
 import { COLORS } from '../../styles/colors';
 
 const GET_ROOM = gql`
@@ -39,6 +42,21 @@ const GET_ROOM = gql`
   }
 `;
 
+const SEND_MESSAGE = gql`
+  mutation SendMessage($roomId: String!, $body: String!) {
+    sendMessage(roomId: $roomId, body: $body) {
+      id
+      body
+      insertedAt
+      user {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+`;
+
 function Chat() {
   const { id } = useLocalSearchParams();
   const [messages, setMessages] = React.useState<IMessage[]>([]);
@@ -48,10 +66,11 @@ function Chat() {
     pollInterval: 500,
   });
 
+  const [sendMessage] = useMutation(SEND_MESSAGE);
+
   const currentUser = data?.user;
   const room = data?.room;
   useEffect(() => {
-    console.log('SETTING MESSAGES');
     const msgs = room?.messages?.slice() ?? [];
     msgs.reverse();
     setMessages(
@@ -75,10 +94,11 @@ function Chat() {
   const lastMessage = messages[messages.length - 1];
   const lastMessageDate = (lastMessage?.createdAt as Date) ?? undefined;
 
-  console.log('messages', messages);
-
-  const send = useCallback((messages: IMessage[] = []) => {
+  const send = useCallback(async (messages: IMessage[] = []) => {
     setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
+    for (const message of messages) {
+      await sendMessage({ variables: { roomId: id, body: message.text ?? '' } });
+    }
   }, []);
 
   return (
@@ -92,6 +112,12 @@ function Chat() {
           name: `${currentUser?.firstName ?? ''} ${currentUser?.lastName ?? ''}`,
         }}
         renderBubble={ChatBubble}
+        renderDay={(props: DayProps) => <Day {...props} textStyle={{ color: COLORS.gray['500'] }} />}
+        renderComposer={ChatInput}
+        renderInputToolbar={ChatInputToolbar}
+        messagesContainerStyle={{ paddingBottom: 40 }}
+        renderSend={ChatSendButton}
+        alwaysShowSend
       />
     </View>
   );
