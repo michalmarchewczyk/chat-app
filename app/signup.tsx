@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import SignupForm from '../components/SignupForm';
+import SignupForm from '../components/auth/SignupForm';
 import { COLORS } from '../styles/colors';
 
 function Signup() {

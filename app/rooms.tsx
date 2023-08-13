@@ -4,9 +4,9 @@ import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
 
 import { RootQueryType } from '../__generated__/types';
 import { GET_ROOMS } from '../api/queries/getRooms';
-import EmptyPlaceholder from '../components/EmptyPlaceholder';
-import RoomItem from '../components/RoomItem';
-import RoomsHeader from '../components/RoomsHeader';
+import RoomItem from '../components/rooms/RoomItem';
+import RoomsHeader from '../components/rooms/RoomsHeader';
+import EmptyPlaceholder from '../components/shared/EmptyPlaceholder';
 import { COLORS } from '../styles/colors';
 
 function Rooms() {

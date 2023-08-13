@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { IMessage, Send, SendProps } from 'react-native-gifted-chat';
 
-import SendIcon from '../assets/icons/send.svg';
-import { COLORS } from '../styles/colors';
+import SendIcon from '../../assets/icons/send.svg';
+import { COLORS } from '../../styles/colors';
 
 function ChatSendButton(props: SendProps<IMessage>) {
   const [pressed, setPressed] = useState(false);

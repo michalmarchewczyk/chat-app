@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { Bubble, BubbleProps, IMessage } from 'react-native-gifted-chat';
 
-import { COLORS } from '../styles/colors';
+import { COLORS } from '../../styles/colors';
 
 function ChatBubble(props: BubbleProps<IMessage>) {
   return (

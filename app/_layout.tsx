@@ -2,7 +2,7 @@ import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
 import React from 'react';
 
-import Provider from '../components/Provider';
+import Provider from '../components/core/Provider';
 
 function Layout() {
   const [fontsLoaded] = useFonts({

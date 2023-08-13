@@ -8,11 +8,11 @@ import { Message, RootQueryType, RootSubscriptionType } from '../../__generated_
 import { SEND_MESSAGE } from '../../api/mutations/sendMessage';
 import { GET_ROOM } from '../../api/queries/getRoom';
 import { LISTEN_MESSAGE_ADDED } from '../../api/subscriptions/listenMessageAdded';
-import ChatBubble from '../../components/ChatBubble';
-import ChatHeader from '../../components/ChatHeader';
-import ChatInput from '../../components/ChatInput';
-import ChatInputToolbar from '../../components/ChatInputToolbar';
-import ChatSendButton from '../../components/ChatSendButton';
+import ChatBubble from '../../components/chats/ChatBubble';
+import ChatHeader from '../../components/chats/ChatHeader';
+import ChatInput from '../../components/chats/ChatInput';
+import ChatInputToolbar from '../../components/chats/ChatInputToolbar';
+import ChatSendButton from '../../components/chats/ChatSendButton';
 import { COLORS } from '../../styles/colors';
 import { convertToChatMessage } from '../../utils/convertToChatMessage';
 
@@ -24,7 +24,6 @@ function Chat() {
     variables: { id },
     fetchPolicy: 'cache-and-network',
   });
-
   const { data: subscriptionData } = useSubscription<RootSubscriptionType>(LISTEN_MESSAGE_ADDED, {
     variables: { roomId: id },
   });

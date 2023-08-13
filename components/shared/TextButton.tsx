@@ -1,7 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, ButtonProps, Pressable, StyleSheet, Text } from 'react-native';
 
-import { COLORS } from '../styles/colors';
+import { COLORS } from '../../styles/colors';
 
 class TextButton extends React.Component<ButtonProps & { loading?: boolean }, never> {
   render() {

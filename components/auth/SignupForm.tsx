@@ -4,10 +4,10 @@ import React, { useEffect, useState } from 'react';
 import { Alert, View } from 'react-native';
 import validator from 'validator';
 
-import Input from './Input';
-import TextButton from './TextButton';
-import { RootMutationType } from '../__generated__/types';
-import { REGISTER_USER } from '../api/mutations/registerUser';
+import { RootMutationType } from '../../__generated__/types';
+import { REGISTER_USER } from '../../api/mutations/registerUser';
+import Input from '../shared/Input';
+import TextButton from '../shared/TextButton';
 
 function SignupForm() {
   const [email, setEmail] = useState('');
@@ -31,19 +31,8 @@ function SignupForm() {
       Alert.alert(
         'User created',
         `Welcome ${data.registerUser.firstName} ${data.registerUser.lastName}\nYou can now log in`,
-        [
-          {
-            text: 'OK',
-            onPress: () => {
-              router.push('/login');
-            },
-          },
-        ],
-        {
-          onDismiss: () => {
-            router.push('/login');
-          },
-        },
+        [{ text: 'OK', onPress: () => router.push('/login') }],
+        { onDismiss: () => router.push('/login') },
       );
     }
   }, [data]);

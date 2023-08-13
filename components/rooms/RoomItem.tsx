@@ -4,19 +4,19 @@ import { Link } from 'expo-router';
 import React, { useEffect, useMemo } from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 
-import { Message, RootQueryType, RootSubscriptionType } from '../__generated__/types';
-import { GET_ROOM_SIMPLE } from '../api/queries/getRoom';
-import { LISTEN_MESSAGE_ADDED_SIMPLE } from '../api/subscriptions/listenMessageAdded';
-import ProfileImage from '../assets/images/profile.svg';
-import { COLORS } from '../styles/colors';
+import { Message, RootQueryType, RootSubscriptionType } from '../../__generated__/types';
+import { GET_ROOM_SIMPLE } from '../../api/queries/getRoom';
+import { LISTEN_MESSAGE_ADDED_SIMPLE } from '../../api/subscriptions/listenMessageAdded';
+import ProfileImage from '../../assets/images/profile.svg';
+import { COLORS } from '../../styles/colors';
 
 function RoomItem({ id, name }: { id: string; name: string }) {
   const [lastMessage, setLastMessage] = React.useState<Message | null>(null);
+
   const { data } = useQuery<RootQueryType>(GET_ROOM_SIMPLE, {
     variables: { id },
     fetchPolicy: 'cache-and-network',
   });
-
   const { data: subscriptionData } = useSubscription<RootSubscriptionType>(LISTEN_MESSAGE_ADDED_SIMPLE, {
     variables: { roomId: id },
   });

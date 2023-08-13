@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { ComposerProps } from 'react-native-gifted-chat';
 
-import Input from './Input';
+import Input from '../shared/Input';
 
 function ChatInput(props: ComposerProps) {
   return (

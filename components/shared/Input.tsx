@@ -2,7 +2,7 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle } from 'react-native';
 
-import { COLORS } from '../styles/colors';
+import { COLORS } from '../../styles/colors';
 
 function Input(
   props: React.ComponentProps<typeof TextInput> & {

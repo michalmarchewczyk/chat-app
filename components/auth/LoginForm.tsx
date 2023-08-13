@@ -3,11 +3,11 @@ import { useRouter } from 'expo-router';
 import React, { useContext, useEffect, useState } from 'react';
 import { View } from 'react-native';
 
-import Input from './Input';
-import TextButton from './TextButton';
-import { RootMutationType } from '../__generated__/types';
-import { LOGIN_USER } from '../api/mutations/loginUser';
-import { AuthContext } from '../utils/AuthContext';
+import { RootMutationType } from '../../__generated__/types';
+import { LOGIN_USER } from '../../api/mutations/loginUser';
+import { AuthContext } from '../core/AuthContext';
+import Input from '../shared/Input';
+import TextButton from '../shared/TextButton';
 
 function LoginForm() {
   const [email, setEmail] = useState('');

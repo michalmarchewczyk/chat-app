@@ -4,12 +4,12 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import Header from './Header';
-import IconButton from './IconButton';
-import PhoneIcon from '../assets/icons/phone.svg';
-import VideocallIcon from '../assets/icons/videocall.svg';
-import ProfileImage from '../assets/images/profile.svg';
-import { COLORS } from '../styles/colors';
+import PhoneIcon from '../../assets/icons/phone.svg';
+import VideocallIcon from '../../assets/icons/videocall.svg';
+import ProfileImage from '../../assets/images/profile.svg';
+import { COLORS } from '../../styles/colors';
+import Header from '../shared/Header';
+import IconButton from '../shared/IconButton';
 
 function ChatHeader({ name, lastMessageDate }: { name: string; lastMessageDate?: Date }) {
   const router = useRouter();
