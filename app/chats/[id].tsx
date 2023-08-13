@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useSubscription } from '@apollo/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useLocalSearchParams } from 'expo-router';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Day, DayProps, GiftedChat, IMessage } from 'react-native-gifted-chat';
 
@@ -18,7 +19,7 @@ import { convertToChatMessage } from '../../utils/convertToChatMessage';
 
 function Chat() {
   const { id } = useLocalSearchParams();
-  const [messages, setMessages] = React.useState<IMessage[]>([]);
+  const [messages, setMessages] = useState<IMessage[]>([]);
 
   const { data } = useQuery<RootQueryType>(GET_ROOM, {
     variables: { id },
@@ -27,6 +28,10 @@ function Chat() {
   const { data: subscriptionData } = useSubscription<RootSubscriptionType>(LISTEN_MESSAGE_ADDED, {
     variables: { roomId: id },
   });
+
+  useEffect(() => {
+    AsyncStorage.setItem(`seen:${id}`, new Date().toISOString());
+  }, [messages]);
 
   useEffect(() => {
     const newMessage = subscriptionData?.messageAdded;

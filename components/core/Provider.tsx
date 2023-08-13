@@ -1,12 +1,12 @@
 import { ApolloProvider } from '@apollo/client';
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { AuthContext } from './AuthContext';
 import { getClient } from '../../api/client';
 
 function Provider({ children }: { children: React.ReactNode }) {
-  const [token, setToken] = React.useState<string | undefined>(undefined);
+  const [token, setToken] = useState<string | undefined>(undefined);
 
   return (
     <SafeAreaProvider>

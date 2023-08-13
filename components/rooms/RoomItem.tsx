@@ -1,7 +1,8 @@
 import { useQuery, useSubscription } from '@apollo/client';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { formatDistanceToNow, parse } from 'date-fns';
 import { Link } from 'expo-router';
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 
 import { Message, RootQueryType, RootSubscriptionType } from '../../__generated__/types';
@@ -11,7 +12,8 @@ import ProfileImage from '../../assets/images/profile.svg';
 import { COLORS } from '../../styles/colors';
 
 function RoomItem({ id, name }: { id: string; name: string }) {
-  const [lastMessage, setLastMessage] = React.useState<Message | null>(null);
+  const [lastMessage, setLastMessage] = useState<Message | null>(null);
+  const [unread, setUnread] = useState(false);
 
   const { data } = useQuery<RootQueryType>(GET_ROOM_SIMPLE, {
     variables: { id },
@@ -44,7 +46,20 @@ function RoomItem({ id, name }: { id: string; name: string }) {
     return date;
   }, [lastMessage]);
 
-  const unread = false;
+  useEffect(() => {
+    AsyncStorage.getItem(`seen:${id}`).then((lastSeen) => {
+      if (lastSeen) {
+        const lastSeenDate = new Date(lastSeen);
+        if (lastMessageDate && lastSeenDate < lastMessageDate) {
+          setUnread(true);
+        } else {
+          setUnread(false);
+        }
+      } else {
+        setUnread(true);
+      }
+    });
+  }, [lastMessageDate]);
 
   return (
     <Link href={`/chats/${id}`} asChild style={styles.wrapper}>
