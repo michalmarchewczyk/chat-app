@@ -10,7 +10,7 @@ function Login() {
   return (
     <SafeAreaView style={styles.wrapper}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }} disableScrollViewPanResponder>
           <View style={styles.container}>
             <Text style={styles.header}>Welcome Back</Text>
             <Text style={styles.subheader}>Log in and stay in touch{'\n'}with everyone!</Text>

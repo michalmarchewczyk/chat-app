@@ -19,7 +19,7 @@ function Signup() {
   return (
     <SafeAreaView style={styles.wrapper}>
       <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
+        <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }} disableScrollViewPanResponder>
           <View style={styles.container}>
             <Text style={styles.header}>Create account</Text>
             <SignupForm />
@@ -27,7 +27,7 @@ function Signup() {
               <Text style={styles.termsText}>
                 <Text>By signing up, you agree with{'\n'}</Text>
                 <Text style={styles.termsLink} onPress={() => Linking.openURL('https://google.com')}>
-                  Terms of Service
+                  Terms and Conditions
                 </Text>
                 <Text> and </Text>
                 <Text style={styles.termsLink} onPress={() => Linking.openURL('https://google.com')}>

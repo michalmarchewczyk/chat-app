@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     fontSize: 28,
     color: COLORS.plum['500'],
+    top: 4,
   },
   headerIcons: {
     flexDirection: 'row',
