@@ -33,6 +33,10 @@ for example using `.env` file:
   EXPO_PUBLIC_API_URL=<URL of GraphQL endpoint>
   EXPO_PUBLIC_WS_URL=<URL of GraphQL WebSocket endpoint>
   ```
+- Generate types for GraphQL queries and mutations:
+  ```bash
+  npm run graphql-codegen
+  ```
 
 ## Running the app
 You can run the app using Expo:
