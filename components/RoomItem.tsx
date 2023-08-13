@@ -1,10 +1,10 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql, useQuery, useSubscription } from '@apollo/client';
 import { formatDistanceToNow, parse } from 'date-fns';
 import { Link } from 'expo-router';
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
 
-import { RootQueryType } from '../__generated__/types';
+import { Message, RootQueryType, RootSubscriptionType } from '../__generated__/types';
 import ProfileImage from '../assets/images/profile.svg';
 import { COLORS } from '../styles/colors';
 
@@ -21,22 +21,54 @@ const GET_ROOM = gql`
   }
 `;
 
+const LISTEN_MESSAGE_ADDED = gql`
+  subscription ListenMessageAdded($roomId: String!) {
+    messageAdded(roomId: $roomId) {
+      id
+      body
+      insertedAt
+      user {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+`;
+
 function RoomItem({ id, name }: { id: string; name: string }) {
+  const [lastMessage, setLastMessage] = React.useState<Message | null>(null);
   const { data } = useQuery<RootQueryType>(GET_ROOM, {
     variables: { id },
-    pollInterval: 2000,
+    fetchPolicy: 'cache-and-network',
   });
 
-  const room = data?.room;
-  const messages = room?.messages?.slice() ?? [];
-  messages.sort(
-    (a, b) =>
-      parse(a?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date()).getTime() -
-      parse(b?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date()).getTime(),
-  );
-  const lastMessage = messages[messages.length - 1] ?? undefined;
-  const lastMessageDate = parse(lastMessage?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date());
-  lastMessageDate?.setMinutes(lastMessageDate.getMinutes() - lastMessageDate.getTimezoneOffset());
+  const { data: subscriptionData } = useSubscription<RootSubscriptionType>(LISTEN_MESSAGE_ADDED, {
+    variables: { roomId: id },
+  });
+
+  useEffect(() => {
+    if (subscriptionData?.messageAdded) {
+      setLastMessage(subscriptionData.messageAdded);
+    }
+  }, [subscriptionData]);
+
+  useEffect(() => {
+    const room = data?.room;
+    const messages = room?.messages?.slice() ?? [];
+    messages.sort(
+      (a, b) =>
+        parse(a?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date()).getTime() -
+        parse(b?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date()).getTime(),
+    );
+    setLastMessage(messages[messages.length - 1] ?? null);
+  }, [data]);
+
+  const lastMessageDate = useMemo(() => {
+    const date = parse(lastMessage?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date());
+    date?.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return date;
+  }, [lastMessage]);
 
   const unread = false;
 

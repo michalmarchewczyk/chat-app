@@ -1,17 +1,17 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
-import { parse } from 'date-fns';
+import { gql, useMutation, useQuery, useSubscription } from '@apollo/client';
 import { useLocalSearchParams } from 'expo-router';
 import React, { useCallback, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Day, DayProps, GiftedChat, IMessage } from 'react-native-gifted-chat';
 
-import { Message, RootQueryType } from '../../__generated__/types';
+import { Message, RootQueryType, RootSubscriptionType } from '../../__generated__/types';
 import ChatBubble from '../../components/ChatBubble';
 import ChatHeader from '../../components/ChatHeader';
 import ChatInput from '../../components/ChatInput';
 import ChatInputToolbar from '../../components/ChatInputToolbar';
 import ChatSendButton from '../../components/ChatSendButton';
 import { COLORS } from '../../styles/colors';
+import { convertToChatMessage } from '../../utils/convertToChatMessage';
 
 const GET_ROOM = gql`
   query GetRoom($id: ID!) {
@@ -57,14 +57,40 @@ const SEND_MESSAGE = gql`
   }
 `;
 
+const LISTEN_MESSAGE_ADDED = gql`
+  subscription ListenMessageAdded($roomId: String!) {
+    messageAdded(roomId: $roomId) {
+      id
+      body
+      insertedAt
+      user {
+        id
+        firstName
+        lastName
+      }
+    }
+  }
+`;
+
 function Chat() {
   const { id } = useLocalSearchParams();
   const [messages, setMessages] = React.useState<IMessage[]>([]);
 
   const { data } = useQuery<RootQueryType>(GET_ROOM, {
     variables: { id },
-    pollInterval: 500,
+    fetchPolicy: 'cache-and-network',
   });
+
+  const { data: subscriptionData } = useSubscription<RootSubscriptionType>(LISTEN_MESSAGE_ADDED, {
+    variables: { roomId: id },
+  });
+
+  useEffect(() => {
+    const newMessage = subscriptionData?.messageAdded;
+    if (newMessage) {
+      setMessages((previousMessages) => GiftedChat.append(previousMessages, [convertToChatMessage(newMessage)]));
+    }
+  }, [subscriptionData]);
 
   const [sendMessage] = useMutation(SEND_MESSAGE);
 
@@ -76,17 +102,7 @@ function Chat() {
     setMessages(
       msgs
         .filter((msg): msg is Message => !!msg)
-        .map(
-          (message): IMessage => ({
-            _id: message.id ?? '',
-            text: message.body ?? '',
-            createdAt: parse(message?.insertedAt ?? '', 'yyyy-MM-dd HH:mm:ss', new Date()) ?? '',
-            user: {
-              _id: message.user?.id ?? '',
-              name: `${message.user?.firstName ?? ''} ${message.user?.lastName ?? ''}`,
-            },
-          }),
-        )
+        .map(convertToChatMessage)
         .sort((a, b) => (b.createdAt as number) - (a.createdAt as number)),
     );
   }, [room?.messages]);
@@ -96,7 +112,7 @@ function Chat() {
   lastMessageDate?.setMinutes(lastMessageDate.getMinutes() - lastMessageDate.getTimezoneOffset());
 
   const send = useCallback(async (messages: IMessage[] = []) => {
-    setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
+    // setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
     for (const message of messages) {
       await sendMessage({ variables: { roomId: id, body: message.text ?? '' } });
     }

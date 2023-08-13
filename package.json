@@ -12,6 +12,8 @@
     "graphql-codegen:watch": "graphql-codegen --watch"
   },
   "dependencies": {
+    "@absinthe/socket": "^0.2.1",
+    "@absinthe/socket-apollo-link": "^0.2.1",
     "@apollo/client": "^3.7.17",
     "date-fns": "^2.30.0",
     "expo": "~49.0.7",
@@ -21,6 +23,7 @@
     "expo-router": "^2.0.1",
     "expo-status-bar": "~1.6.0",
     "graphql": "^15.8.0",
+    "phoenix": "^1.7.7",
     "react": "18.2.0",
     "react-native": "0.72.3",
     "react-native-gesture-handler": "^2.12.1",
@@ -34,6 +37,9 @@
     "@babel/core": "^7.20.0",
     "@graphql-codegen/cli": "^5.0.0",
     "@graphql-codegen/client-preset": "^4.1.0",
+    "@types/absinthe__socket": "^0.2.3",
+    "@types/absinthe__socket-apollo-link": "^0.2.1",
+    "@types/phoenix": "^1.6.0",
     "@types/react": "~18.0.14",
     "@types/validator": "^13.11.1",
     "eslint": "^8.46.0",
