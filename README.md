@@ -41,5 +41,5 @@ for example using `.env` file:
 ## Running the app
 You can run the app using Expo:
 ```bash
-expo start
+npm start
 ```
