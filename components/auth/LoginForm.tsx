@@ -41,6 +41,7 @@ function LoginForm() {
         value={email}
         onChangeText={setEmail}
         onChange={() => setError(undefined)}
+        inputMode="email"
       />
       <Input
         label="password"

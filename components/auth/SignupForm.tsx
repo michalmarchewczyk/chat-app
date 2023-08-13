@@ -85,6 +85,7 @@ function SignupForm() {
         error={errors.email}
         onBlur={() => runValidations()}
         onChange={() => setErrors({ ...errors, email: undefined })}
+        inputMode="email"
       />
       <Input
         label="first name"

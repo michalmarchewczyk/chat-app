@@ -1,5 +1,6 @@
 import { ApolloProvider } from '@apollo/client';
 import React from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { AuthContext } from './AuthContext';
 import { getClient } from '../../api/client';
@@ -8,14 +9,16 @@ function Provider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = React.useState<string | undefined>(undefined);
 
   return (
-    <AuthContext.Provider
-      value={{
-        token,
-        setToken,
-      }}
-    >
-      <ApolloProvider client={getClient(token)}>{children}</ApolloProvider>
-    </AuthContext.Provider>
+    <SafeAreaProvider>
+      <AuthContext.Provider
+        value={{
+          token,
+          setToken,
+        }}
+      >
+        <ApolloProvider client={getClient(token)}>{children}</ApolloProvider>
+      </AuthContext.Provider>
+    </SafeAreaProvider>
   );
 }
 
