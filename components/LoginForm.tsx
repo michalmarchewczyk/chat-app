@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useRouter } from 'expo-router';
 import React, { useContext, useEffect, useState } from 'react';
 import { View } from 'react-native';
@@ -6,18 +6,8 @@ import { View } from 'react-native';
 import Input from './Input';
 import TextButton from './TextButton';
 import { RootMutationType } from '../__generated__/types';
+import { LOGIN_USER } from '../api/mutations/loginUser';
 import { AuthContext } from '../utils/AuthContext';
-
-const LOGIN_USER = gql`
-  mutation LoginUser($email: String!, $password: String!) {
-    loginUser(email: $email, password: $password) {
-      token
-      user {
-        id
-      }
-    }
-  }
-`;
 
 function LoginForm() {
   const [email, setEmail] = useState('');

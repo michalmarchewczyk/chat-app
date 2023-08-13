@@ -1,49 +1,23 @@
-import { gql, useQuery, useSubscription } from '@apollo/client';
+import { useQuery, useSubscription } from '@apollo/client';
 import { formatDistanceToNow, parse } from 'date-fns';
 import { Link } from 'expo-router';
 import React, { useEffect, useMemo } from 'react';
-import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 
 import { Message, RootQueryType, RootSubscriptionType } from '../__generated__/types';
+import { GET_ROOM_SIMPLE } from '../api/queries/getRoom';
+import { LISTEN_MESSAGE_ADDED_SIMPLE } from '../api/subscriptions/listenMessageAdded';
 import ProfileImage from '../assets/images/profile.svg';
 import { COLORS } from '../styles/colors';
 
-const GET_ROOM = gql`
-  query GetRoom($id: ID!) {
-    room(id: $id) {
-      id
-      name
-      messages {
-        body
-        insertedAt
-      }
-    }
-  }
-`;
-
-const LISTEN_MESSAGE_ADDED = gql`
-  subscription ListenMessageAdded($roomId: String!) {
-    messageAdded(roomId: $roomId) {
-      id
-      body
-      insertedAt
-      user {
-        id
-        firstName
-        lastName
-      }
-    }
-  }
-`;
-
 function RoomItem({ id, name }: { id: string; name: string }) {
   const [lastMessage, setLastMessage] = React.useState<Message | null>(null);
-  const { data } = useQuery<RootQueryType>(GET_ROOM, {
+  const { data } = useQuery<RootQueryType>(GET_ROOM_SIMPLE, {
     variables: { id },
     fetchPolicy: 'cache-and-network',
   });
 
-  const { data: subscriptionData } = useSubscription<RootSubscriptionType>(LISTEN_MESSAGE_ADDED, {
+  const { data: subscriptionData } = useSubscription<RootSubscriptionType>(LISTEN_MESSAGE_ADDED_SIMPLE, {
     variables: { roomId: id },
   });
 

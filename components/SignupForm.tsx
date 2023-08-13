@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Alert, View } from 'react-native';
@@ -7,29 +7,7 @@ import validator from 'validator';
 import Input from './Input';
 import TextButton from './TextButton';
 import { RootMutationType } from '../__generated__/types';
-
-const REGISTER_USER = gql`
-  mutation RegisterUser(
-    $email: String!
-    $firstName: String!
-    $lastName: String!
-    $password: String!
-    $passwordConfirmation: String!
-  ) {
-    registerUser(
-      email: $email
-      firstName: $firstName
-      lastName: $lastName
-      password: $password
-      passwordConfirmation: $passwordConfirmation
-    ) {
-      id
-      firstName
-      lastName
-      email
-    }
-  }
-`;
+import { REGISTER_USER } from '../api/mutations/registerUser';
 
 function SignupForm() {
   const [email, setEmail] = useState('');

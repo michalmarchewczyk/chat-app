@@ -1,10 +1,13 @@
-import { gql, useMutation, useQuery, useSubscription } from '@apollo/client';
+import { useMutation, useQuery, useSubscription } from '@apollo/client';
 import { useLocalSearchParams } from 'expo-router';
 import React, { useCallback, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Day, DayProps, GiftedChat, IMessage } from 'react-native-gifted-chat';
 
 import { Message, RootQueryType, RootSubscriptionType } from '../../__generated__/types';
+import { SEND_MESSAGE } from '../../api/mutations/sendMessage';
+import { GET_ROOM } from '../../api/queries/getRoom';
+import { LISTEN_MESSAGE_ADDED } from '../../api/subscriptions/listenMessageAdded';
 import ChatBubble from '../../components/ChatBubble';
 import ChatHeader from '../../components/ChatHeader';
 import ChatInput from '../../components/ChatInput';
@@ -12,65 +15,6 @@ import ChatInputToolbar from '../../components/ChatInputToolbar';
 import ChatSendButton from '../../components/ChatSendButton';
 import { COLORS } from '../../styles/colors';
 import { convertToChatMessage } from '../../utils/convertToChatMessage';
-
-const GET_ROOM = gql`
-  query GetRoom($id: ID!) {
-    room(id: $id) {
-      id
-      name
-      user {
-        id
-        firstName
-        lastName
-      }
-      messages {
-        id
-        body
-        insertedAt
-        user {
-          id
-          firstName
-          lastName
-        }
-      }
-    }
-    user {
-      id
-      firstName
-      lastName
-    }
-  }
-`;
-
-const SEND_MESSAGE = gql`
-  mutation SendMessage($roomId: String!, $body: String!) {
-    sendMessage(roomId: $roomId, body: $body) {
-      id
-      body
-      insertedAt
-      user {
-        id
-        firstName
-        lastName
-      }
-    }
-  }
-`;
-
-const LISTEN_MESSAGE_ADDED = gql`
-  subscription ListenMessageAdded($roomId: String!) {
-    messageAdded(roomId: $roomId) {
-      id
-      body
-      insertedAt
-      user {
-        id
-        firstName
-        lastName
-      }
-    }
-  }
-`;
 
 function Chat() {
   const { id } = useLocalSearchParams();

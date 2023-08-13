@@ -34,6 +34,7 @@ function Input(
           setFocused(false);
         }}
         selectionColor={COLORS.black}
+        cursorColor={COLORS.black}
         secureTextEntry={props.secureTextEntry && hidden}
       />
       {!!(focused && props.value?.length && !props.secureTextEntry) && (

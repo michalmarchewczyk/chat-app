@@ -1,8 +1,8 @@
 import { ApolloProvider } from '@apollo/client';
 import React from 'react';
 
+import { getClient } from '../api/client';
 import { AuthContext } from '../utils/AuthContext';
-import { getClient } from '../utils/client';
 
 function Provider({ children }: { children: React.ReactNode }) {
   const [token, setToken] = React.useState<string | undefined>(undefined);

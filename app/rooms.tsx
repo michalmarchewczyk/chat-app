@@ -1,23 +1,13 @@
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import React from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
 
 import { RootQueryType } from '../__generated__/types';
+import { GET_ROOMS } from '../api/queries/getRooms';
 import EmptyPlaceholder from '../components/EmptyPlaceholder';
 import RoomItem from '../components/RoomItem';
 import RoomsHeader from '../components/RoomsHeader';
 import { COLORS } from '../styles/colors';
-
-const GET_ROOMS = gql`
-  query {
-    usersRooms {
-      rooms {
-        id
-        name
-      }
-    }
-  }
-`;
 
 function Rooms() {
   const { loading, error, data, refetch } = useQuery<RootQueryType>(GET_ROOMS);
